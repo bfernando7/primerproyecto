@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Listado de Municipios</h1>
+  <table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Departamento</th>
+            <th>Pais</th>
+            <th>Código</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for municipio in municipios %} 
+        <tr>
+            <td>{{ municipio.nombre }}</td>
+            <td>{{ municipio.departamento.nombre }}</td> 
+            <td>{{ municipio.departamento.pais.nombre }}</td>  
+            <td>{{ municipio.codigo }}</td>
+            <td>
+                <a href="{% url 'municipio_update' municipio.pk %}">Editar</a>
+                |
+                <a href="{% url 'municipio_delete' municipio.pk %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'municipio_create' %}">Agregar Municipio</a><br><br>
+
+  <!--para buscar Municipio-->
+  <form method="GET">
+    <input type="text" name="q" placeholder="Buscar Municipio">
+    <button type="submit">Buscar</button>
+  </form>
+
+  <div class="pagination">
+    <span class="step-links">
+      {% if Municipio.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ Municipio.previous_page_number }}">previous</a>
+      {% endif %}
+      
+      <span class="current-page">
+        Página {{ Municipio.codigo }} de {{ Municipio.paginator.num_pages }}.
+      </span>
+      
+      {% if paises.has_next %}
+        <a href="?page={{ Municipio.next_page_number }}">next</a>
+        <a href="?page={{ Municipio.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+    </span>
+  </div>
+
+  <a href="{% url 'municipio_list' %}">Volver al Listado de Municipios</a>
+
+{% endblock %}

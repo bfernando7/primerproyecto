@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{% if departamento.pk %}Editar Municipio{% else %}Agregar Municipio{% endif %}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+  </form>
+  <a href="{% url 'municipio_list' %}">Volver al Listado de Municipios</a>
+{% endblock %}

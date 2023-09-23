@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Listado de Departamentos</h1>
+  <table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Pais</th>
+            <th>Código</th>
+            <th>Acciones</th>  <!-- Agregamos una columna para las acciones -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for departamento in departamentos %}
+        <tr>
+            <td>{{ departamento.nombre }}</td>
+            <td>{{ departamento.pais.nombre }}</td>
+            <td>{{ departamento.codigo }}</td>
+            <td>
+                <a href="{% url 'departamento_update' departamento.pk %}">Editar</a>
+                |
+                <a href="{% url 'departamento_delete' departamento.pk %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'departamento_create' %}">Agregar Departamento</a><br><br>
+
+  <!--para buscar Departamento-->
+    <form method="GET">
+      <input type="text" name="q" placeholder="Buscar Departamento">
+      <button type="submit">Buscar</button>
+    </form>
+
+    <div class="pagination">
+        <span class="step-links">
+          {% if Departamento.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ Departamento.previous_page_number }}">previous</a>
+          {% endif %}
+          
+          <span class="current-page">
+            Página {{ Departamento.codigo }} de {{ Departamento.paginator.num_pages }}.
+          </span>
+          
+          {% if paises.has_next %}
+            <a href="?page={{ Departamento.next_page_number }}">next</a>
+            <a href="?page={{ Departamento.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+      
+    <a href="{% url 'departamento_list' %}">Volver al Listado de Departamentos</a>
+{% endblock %}
+
